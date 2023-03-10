@@ -1,0 +1,222 @@
+.container {
+  width: 1270px;
+  margin: 0 auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 20px;
+}
+
+.checkers-table {
+  border: solid 1px black;
+  height: 700px;
+  width: 900px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 100vh;
+}
+
+.checkers-table-slot {
+  border: solid black 1px;
+  width: 110.50px;
+  height: 85.50px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #F5F5DC;
+}
+
+.checkers-table-slot.black {
+  background-color: #804030;
+}
+
+.list-number {
+  list-style: none;
+  margin: 0 10px;
+  padding: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.list-number li {
+  height: 87.5px;
+  font-size: 25px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.list-letter {
+  list-style: none;
+  margin: 10px 0;
+  padding: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.list-letter li {
+  width: 112.50px;
+  font-size: 25px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.button-wrapper {
+  margin: 30px 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.start-button {
+  width: 300px;
+  height: 40px;
+  background: none;
+  text-transform: uppercase;
+  font-size: 20px;
+}
+
+.start-button:hover {
+  cursor: pointer;
+  background: #5c99fa;
+}
+
+.checker {
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+}
+
+.checker:hover {
+  cursor: pointer;
+}
+
+.checker.white {
+  border: black solid 1px;
+  background: white;
+}
+
+.checker.black {
+  border: black solid 1px;
+  background: black;
+}
+
+.way {
+  border: solid black 1px;
+  background-color: black;
+  width: 10px;
+  border-radius: 50%;
+  height: 10px;
+}
+
+.information {
+  padding: 20px 0;
+  width: 220px;
+  font-family: sans-serif;
+  height: 702px;
+  font-size: 25px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.information .currentWayTeam {
+  border-bottom: solid black 2px;
+  padding-bottom: 38px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.information .currentGameTime {
+  border-bottom: solid black 2px;
+  padding: 20px 0;
+  text-align: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 20px;
+  text-transform: uppercase;
+}
+
+.information .currentWayTime {
+  padding: 20px 0;
+  text-align: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 20px;
+  text-transform: uppercase;
+}
+
+.information .information__inner {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.red {
+  color: red !important;
+}
+/*# sourceMappingURL=style.css.map */

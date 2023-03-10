@@ -1,0 +1,125 @@
+.container
+    width: 1270px
+    margin: 0 auto
+    display: flex
+    justify-content: center
+    gap: 20px
+
+.checkers-table
+    border: solid 1px black
+    height: 700px
+    width: 900px
+    display: flex
+    flex-wrap: wrap
+
+body
+    display: flex
+    align-items: center
+    height: 100vh
+
+.checkers-table-slot
+    border: solid black 1px
+    width: 110.50px
+    height: 85.50px
+    display: flex
+    justify-content: center
+    align-items: center
+    background-color: #F5F5DC
+    &.black
+        background-color: #804030
+
+.list-number
+    list-style: none
+    margin: 0 10px
+    padding: 0
+    display: flex
+    flex-direction: column
+    li
+        height: 87.5px
+        font-size: 25px
+        display: flex
+        align-items: center
+
+.list-letter
+    list-style: none
+    margin: 10px 0
+    padding: 0
+    display: flex
+    li
+        width: 112.50px
+        font-size: 25px
+        display: flex
+        align-items: center
+        justify-content: center
+
+.button-wrapper
+    margin: 30px 0
+    display: flex
+    justify-content: center
+
+.start-button
+    width: 300px
+    height: 40px
+    background: none
+    text-transform: uppercase
+    font-size: 20px
+    &:hover
+        cursor: pointer
+        background: #5c99fa
+
+.checker
+    border-radius: 50%
+    width: 80px
+    height: 80px
+    &:hover
+        cursor: pointer
+    &.white
+        border: black solid 1px
+        background: white
+    &.black
+        border: black solid 1px
+        background: black
+
+.way
+    border: solid black 1px
+    background-color: black
+    width: 10px
+    border-radius: 50%
+    height: 10px
+
+.information
+    padding: 20px 0
+    width: 220px
+    font-family: sans-serif
+    height: 702px
+    font-size: 25px
+    display: flex
+    justify-content: center
+    flex-direction: column
+    .currentWayTeam
+        border-bottom: solid black 2px
+        padding-bottom: 38px
+        text-align: center
+        text-transform: uppercase
+    .currentGameTime
+        border-bottom: solid black 2px
+        padding: 20px 0
+        text-align: center
+        display: flex
+        flex-direction: column
+        gap: 20px
+        text-transform: uppercase
+    .currentWayTime
+        padding: 20px 0
+        text-align: center
+        display: flex
+        flex-direction: column
+        gap: 20px
+        text-transform: uppercase
+    .information__inner
+        display: flex
+        justify-content: center
+        flex-direction: column
+
+.red
+    color: red !important
