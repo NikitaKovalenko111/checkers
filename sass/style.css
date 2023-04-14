@@ -29,6 +29,64 @@ body {
       -ms-flex-align: center;
           align-items: center;
   height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.popup {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.popup__inner {
+  width: 100%;
+  height: 100%;
+  background-color: gray;
+  position: absolute;
+  opacity: 95%;
+  cursor: pointer;
+}
+
+.popup__content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 500px;
+  height: 400px;
+  background-color: white;
+  position: absolute;
+  z-index: 1000;
+  gap: 50px;
+}
+
+.popup__content h2 {
+  text-transform: uppercase;
+  font-family: sans-serif;
+}
+
+.popup__content p {
+  text-transform: uppercase;
+  font-family: sans-serif;
 }
 
 .checkers-table-slot {
@@ -141,12 +199,41 @@ body {
   background: black;
 }
 
+.checker.queen {
+  background-size: 75% auto;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.queen.white {
+  background-image: url("../icons/crown-black.png") !important;
+}
+
+.queen.black {
+  background-image: url("../icons/crown-white.png") !important;
+}
+
 .way {
   border: solid black 1px;
   background-color: black;
   width: 10px;
   border-radius: 50%;
   height: 10px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.currentGameTime {
+  padding: 20px 0;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: sans-serif;
+}
+
+.currentGameTime.spec {
+  font-size: 18px;
 }
 
 .information {
@@ -174,10 +261,8 @@ body {
   text-transform: uppercase;
 }
 
-.information .currentGameTime {
+.information.currentGameTime {
   border-bottom: solid black 2px;
-  padding: 20px 0;
-  text-align: center;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -186,7 +271,6 @@ body {
       -ms-flex-direction: column;
           flex-direction: column;
   gap: 20px;
-  text-transform: uppercase;
 }
 
 .information .currentWayTime {

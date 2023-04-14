@@ -16,6 +16,41 @@ body
     display: flex
     align-items: center
     height: 100vh
+    margin: 0
+    padding: 0
+
+.popup
+    width: 100%
+    height: 100%
+    position: absolute
+    display: flex
+    justify-content: center
+    align-items: center
+    &__inner
+        width: 100%
+        height: 100%
+        background-color: gray
+        position: absolute
+        opacity: 95%
+        cursor: pointer
+    &__content
+        display: flex
+        flex-direction: column
+        justify-content: center
+        align-items: center
+        width: 500px
+        height: 400px
+        background-color: white
+        position: absolute
+        z-index: 1000
+        gap: 50px
+        h2
+            text-transform: uppercase
+            font-family: sans-serif
+        p
+            text-transform: uppercase
+            font-family: sans-serif
+
 
 .checkers-table-slot
     border: solid black 1px
@@ -79,6 +114,16 @@ body
     &.black
         border: black solid 1px
         background: black
+    &.queen
+        background-size: 75% auto
+        background-repeat: no-repeat
+        background-position: center
+
+.queen
+    &.white
+        background-image: url('../icons/crown-black.png') !important
+    &.black
+        background-image: url('../icons/crown-white.png') !important
 
 .way
     border: solid black 1px
@@ -86,6 +131,17 @@ body
     width: 10px
     border-radius: 50%
     height: 10px
+
+.hidden
+    display: none !important
+
+.currentGameTime
+    padding: 20px 0
+    text-align: center
+    text-transform: uppercase
+    font-family: sans-serif
+    &.spec
+        font-size: 18px
 
 .information
     padding: 20px 0
@@ -101,14 +157,11 @@ body
         padding-bottom: 38px
         text-align: center
         text-transform: uppercase
-    .currentGameTime
+    &.currentGameTime
         border-bottom: solid black 2px
-        padding: 20px 0
-        text-align: center
         display: flex
         flex-direction: column
         gap: 20px
-        text-transform: uppercase
     .currentWayTime
         padding: 20px 0
         text-align: center
