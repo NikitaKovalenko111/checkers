@@ -1,40 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./sass/style.css">
-    <title>Checkers</title>
-</head>
-<body>
-    <div class="popup hidden">
-        <div class="popup__content">
-            <h2 class="popup-winner">Победили белые</h2>
-            <div class="currentGameTime spec">Время игры: <span class="endtime">0</span></div>
-            <button class="start-button">Начать новую игру</button>
-        </div>
-        <div class="popup__inner"></div>
-    </div>
-    <main class="container">
-        <ul class="list-number"></ul>
-        <div>
-            <div class="checkers-table">
-
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./sass/style.css" />
+        <title>Checkers</title>
+    </head>
+    <body>
+        <div class="popup hidden">
+            <div class="popup__content">
+                <h2 class="popup-winner">Победили белые</h2>
+                <div class="currentGameTime spec">
+                    Время игры: <span class="endtime">0</span>
+                </div>
+                <button class="start-button">Начать новую игру</button>
             </div>
-            <ul class="list-letter"></ul>
-            <div class="button-wrapper">
-                <button class="start-button">Начать игру</button>
-            </div>
+            <div class="popup__inner"></div>
         </div>
-        <div class="information">
-            <div class="information__inner">
-                <div class="currentWayTeam">Ход белых</div>
-                <div class="currentGameTime">Время игры: <span class="time">0:0</span></div>
-                <div class="currentWayTime">Время на ход: <span class="time">20</span></div>
+        <main class="container">
+            <ul class="list-number"></ul>
+            <div>
+                <div class="checkers-table"></div>
+                <ul class="list-letter"></ul>
+                <div class="button-wrapper">
+                    <button class="start-button">Начать игру</button>
+                </div>
             </div>
-        </div>
-    </main>
-    <script src="./js/script.js"></script>
-</body>
+            <div class="information">
+                <div class="information__inner">
+                    <div class="currentWayTeam">Ход белых</div>
+                    <div class="currentGameTime">
+                        Время игры: <span class="time">0:0</span>
+                    </div>
+                    <div class="currentWayTime">
+                        Время на ход: <span class="time">20</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <script src="./js/script.js"></script>
+    </body>
 </html>

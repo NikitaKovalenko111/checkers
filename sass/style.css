@@ -1,306 +1,306 @@
 .container {
-  width: 1270px;
-  margin: 0 auto;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  gap: 20px;
+    width: 1270px;
+    margin: 0 auto;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    gap: 20px;
 }
 
 .checkers-table {
-  border: solid 1px black;
-  height: 700px;
-  width: 900px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+    border: solid 1px black;
+    height: 700px;
+    width: 900px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
 }
 
 body {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
 }
 
 .popup {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
 }
 
 .popup__inner {
-  width: 100%;
-  height: 100%;
-  background-color: gray;
-  position: absolute;
-  opacity: 95%;
-  cursor: pointer;
+    width: 100%;
+    height: 100%;
+    background-color: gray;
+    position: absolute;
+    opacity: 95%;
+    cursor: pointer;
 }
 
 .popup__content {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  width: 500px;
-  height: 400px;
-  background-color: white;
-  position: absolute;
-  z-index: 1000;
-  gap: 50px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    width: 500px;
+    height: 400px;
+    background-color: white;
+    position: absolute;
+    z-index: 1000;
+    gap: 50px;
 }
 
 .popup__content h2 {
-  text-transform: uppercase;
-  font-family: sans-serif;
+    text-transform: uppercase;
+    font-family: sans-serif;
 }
 
 .popup__content p {
-  text-transform: uppercase;
-  font-family: sans-serif;
+    text-transform: uppercase;
+    font-family: sans-serif;
 }
 
 .checkers-table-slot {
-  border: solid black 1px;
-  width: 110.50px;
-  height: 85.50px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  background-color: #F5F5DC;
+    border: solid black 1px;
+    width: 110.5px;
+    height: 85.5px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background-color: #f5f5dc;
 }
 
 .checkers-table-slot.black {
-  background-color: #804030;
+    background-color: #804030;
 }
 
 .list-number {
-  list-style: none;
-  margin: 0 10px;
-  padding: 0;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+    list-style: none;
+    margin: 0 10px;
+    padding: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
 }
 
 .list-number li {
-  height: 87.5px;
-  font-size: 25px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+    height: 87.5px;
+    font-size: 25px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
 }
 
 .list-letter {
-  list-style: none;
-  margin: 10px 0;
-  padding: 0;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
+    list-style: none;
+    margin: 10px 0;
+    padding: 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
 }
 
 .list-letter li {
-  width: 112.50px;
-  font-size: 25px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+    width: 112.5px;
+    font-size: 25px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
 }
 
 .button-wrapper {
-  margin: 30px 0;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+    margin: 30px 0;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
 }
 
 .start-button {
-  width: 300px;
-  height: 40px;
-  background: none;
-  text-transform: uppercase;
-  font-size: 20px;
+    width: 300px;
+    height: 40px;
+    background: none;
+    text-transform: uppercase;
+    font-size: 20px;
 }
 
 .start-button:hover {
-  cursor: pointer;
-  background: #5c99fa;
+    cursor: pointer;
+    background: #5c99fa;
 }
 
 .checker {
-  border-radius: 50%;
-  width: 80px;
-  height: 80px;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
 }
 
 .checker:hover {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .checker.white {
-  border: black solid 1px;
-  background: white;
+    border: black solid 1px;
+    background: white;
 }
 
 .checker.black {
-  border: black solid 1px;
-  background: black;
+    border: black solid 1px;
+    background: black;
 }
 
 .checker.queen {
-  background-size: 75% auto;
-  background-repeat: no-repeat;
-  background-position: center;
+    background-size: 75% auto;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .queen.white {
-  background-image: url("../icons/crown-black.png") !important;
+    background-image: url('../icons/crown-black.png') !important;
 }
 
 .queen.black {
-  background-image: url("../icons/crown-white.png") !important;
+    background-image: url('../icons/crown-white.png') !important;
 }
 
 .way {
-  border: solid black 1px;
-  background-color: black;
-  width: 10px;
-  border-radius: 50%;
-  height: 10px;
+    border: solid black 1px;
+    background-color: black;
+    width: 10px;
+    border-radius: 50%;
+    height: 10px;
 }
 
 .hidden {
-  display: none !important;
+    display: none !important;
 }
 
 .currentGameTime {
-  padding: 20px 0;
-  text-align: center;
-  text-transform: uppercase;
-  font-family: sans-serif;
+    padding: 20px 0;
+    text-align: center;
+    text-transform: uppercase;
+    font-family: sans-serif;
 }
 
 .currentGameTime.spec {
-  font-size: 18px;
+    font-size: 18px;
 }
 
 .information {
-  padding: 20px 0;
-  width: 220px;
-  font-family: sans-serif;
-  height: 702px;
-  font-size: 25px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+    padding: 20px 0;
+    width: 220px;
+    font-family: sans-serif;
+    height: 702px;
+    font-size: 25px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
 }
 
 .information .currentWayTeam {
-  border-bottom: solid black 2px;
-  padding-bottom: 38px;
-  text-align: center;
-  text-transform: uppercase;
+    border-bottom: solid black 2px;
+    padding-bottom: 38px;
+    text-align: center;
+    text-transform: uppercase;
 }
 
 .information.currentGameTime {
-  border-bottom: solid black 2px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  gap: 20px;
+    border-bottom: solid black 2px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .information .currentWayTime {
-  padding: 20px 0;
-  text-align: center;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  gap: 20px;
-  text-transform: uppercase;
+    padding: 20px 0;
+    text-align: center;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    gap: 20px;
+    text-transform: uppercase;
 }
 
 .information .information__inner {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
 }
 
 .red {
-  color: red !important;
+    color: red !important;
 }
 /*# sourceMappingURL=style.css.map */
