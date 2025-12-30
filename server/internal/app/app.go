@@ -37,6 +37,10 @@ func Run() {
 
 	logger.Info("Successfully connected to database!")
 
+	storage.Prepare()
+
+	logger.Info("Successfully prepared db!")
+
 	queue := queue.Queue{}
 	queue.Init()
 
@@ -44,7 +48,13 @@ func Run() {
 
 	logger.Info("Successfully inited all services!")
 
-	io := socket.SocketStart(app)
+	io, err := socket.SocketStart(app, storage.Redis)
+
+	if err != nil {
+		panic("Couldn't start socket!")
+	}
+
+	defer io.Close()
 
 	controllers := http.Init(services.Handlers, app, &queue, io)
 

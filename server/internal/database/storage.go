@@ -50,6 +50,7 @@ func InitRepositories(db *sql.DB) *Repositories {
 
 func InitStorage(db *sql.DB, repos *Repositories, cfg *config.Config) *Storage {
 	redis := redis.Init(cfg)
+	redis.Connect()
 
 	storage := Storage{
 		Db:    db,
@@ -58,4 +59,33 @@ func InitStorage(db *sql.DB, repos *Repositories, cfg *config.Config) *Storage {
 	}
 
 	return &storage
+}
+
+func (storage *Storage) Prepare() {
+	_, err := storage.Db.Exec(
+		`
+		CREATE TABLE IF NOT EXISTS player (
+			player_id SERIAL PRIMARY KEY,
+			status VARCHAR(64) NOT NULL
+		)
+		`,
+	)
+
+	if err != nil {
+		panic(fmt.Sprintf("%s Error: %s", "Couldn't prepare table player!", err.Error()))
+	}
+
+	_, err = storage.Db.Exec(
+		`
+		CREATE TABLE IF NOT EXISTS game_session (
+			session_id SERIAL PRIMARY KEY,
+			first_player_id INT REFERENCES player(player_id),
+			second_player_id INT REFERENCES player(player_id)
+		)
+		`,
+	)
+
+	if err != nil {
+		panic(fmt.Sprintf("%s Error: %s", "Couldn't prepare table game_session!", err.Error()))
+	}
 }

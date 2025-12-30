@@ -2,7 +2,9 @@ package redis
 
 import (
 	"checkers-server/internal/config"
+	"checkers-server/internal/models"
 	"context"
+	"encoding/json"
 	"strconv"
 
 	"github.com/redis/go-redis/v9"
@@ -52,4 +54,47 @@ func (s *RedisStorage) GetSocketConnection(userId int) (*string, error) {
 	}
 
 	return &socketId, nil
+}
+
+func (s *RedisStorage) RemoveSocketConnection(userId int) error {
+	ctx := context.Background()
+
+	err := s.rdb.Del(ctx, strconv.Itoa(userId)).Err()
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *RedisStorage) AddSession(session *models.Session) error {
+	ctx := context.Background()
+
+	err := s.rdb.Set(ctx, strconv.Itoa(session.Id), session, 0).Err()
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *RedisStorage) GetSession(sessionId int) (*models.Session, error) {
+	ctx := context.Background()
+
+	session, err := s.rdb.Get(ctx, strconv.Itoa(sessionId)).Result()
+
+	if err != nil {
+		return nil, err
+	}
+
+	var parsedSession models.Session
+	err = json.Unmarshal([]byte(session), &parsedSession)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &parsedSession, nil
 }
