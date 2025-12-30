@@ -12,12 +12,19 @@ type Config struct {
 	Env        string     `yaml:"env" env-required:"true"`
 	HTTPServer HTTPServer `yaml:"http_server"`
 	Storage    Storage    `yaml:"storage"`
+	Redis      Redis      `yaml:"redis"`
 }
 
 type HTTPServer struct {
 	Address      string        `yaml:"address" env-default:"3001"`
 	Timeout      time.Duration `yaml:"timeout" env-default:"5s"`
 	Idle_timeout time.Duration `yaml:"idle_timeout" env-default:"60s"`
+}
+
+type Redis struct {
+	Addr     string `yaml:"addr" env-default:"localhost:6379"`
+	Password string `yaml:"password" env-default:""`
+	Db       int    `yaml:"db" env-default:"0"`
 }
 
 type Storage struct {

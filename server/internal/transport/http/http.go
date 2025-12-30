@@ -7,11 +7,13 @@ import (
 	"checkers-server/internal/utils/queue"
 
 	"github.com/gofiber/fiber/v2"
+	socketio "github.com/googollee/go-socket.io"
 )
 
 type HTTP struct {
 	Services    *services.Handlers
 	Controllers *Controllers
+	Io          *socketio.Server
 }
 
 type Controllers struct {
@@ -19,8 +21,8 @@ type Controllers struct {
 	PlayerController  *playerController.PlayerController
 }
 
-func Init(services *services.Handlers, app fiber.Router, queue *queue.Queue) *HTTP {
-	sessionController := sessionController.Init(services.PlayerService, services.SessionService, app, queue)
+func Init(services *services.Handlers, app fiber.Router, queue *queue.Queue, io *socketio.Server) *HTTP {
+	sessionController := sessionController.Init(services.PlayerService, services.SessionService, app, queue, io)
 	playerController := playerController.Init(services.PlayerService, app, queue)
 
 	controllers := Controllers{

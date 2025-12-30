@@ -6,9 +6,9 @@ import (
 	sessionService "checkers-server/internal/services/session"
 	sessionControllerDto "checkers-server/internal/transport/http/controllers/session/dto"
 	"checkers-server/internal/utils/queue"
-	"fmt"
 
 	"github.com/gofiber/fiber/v2"
+	socketio "github.com/googollee/go-socket.io"
 )
 
 type SessionController struct {
@@ -16,9 +16,10 @@ type SessionController struct {
 	PlayerService  *playerService.PlayerService
 	SessionService *sessionService.SessionService
 	Queue          *queue.Queue
+	Io             *socketio.Server
 }
 
-func Init(playerService *playerService.PlayerService, sessionService *sessionService.SessionService, router fiber.Router, queue *queue.Queue) *SessionController {
+func Init(playerService *playerService.PlayerService, sessionService *sessionService.SessionService, router fiber.Router, queue *queue.Queue, io *socketio.Server) *SessionController {
 	controller := SessionController{
 		PlayerService:  playerService,
 		SessionService: sessionService,
@@ -46,7 +47,6 @@ func (controller *SessionController) StartGame(c *fiber.Ctx) error {
 	}
 
 	opponent, err = controller.PlayerService.FindOpponent(player.PlayerId)
-	fmt.Println(opponent)
 
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, "Some error...")

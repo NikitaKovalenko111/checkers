@@ -26,8 +26,6 @@ func Run() {
 	logger.Info("Logger is started...")
 	logger.Debug("Debug level is enabled...")
 
-	logger.Debug("")
-
 	db, err := storage.Connect(cfg)
 
 	if err != nil {
@@ -35,7 +33,7 @@ func Run() {
 	}
 
 	repos := storage.InitRepositories(db)
-	storage := storage.InitStorage(db, repos)
+	storage := storage.InitStorage(db, repos, cfg)
 
 	logger.Info("Successfully connected to database!")
 
@@ -46,11 +44,11 @@ func Run() {
 
 	logger.Info("Successfully inited all services!")
 
-	controllers := http.Init(services.Handlers, app, &queue)
+	io := socket.SocketStart(app)
+
+	controllers := http.Init(services.Handlers, app, &queue, io)
 
 	controllers.Start()
-
-	socket.SocketStart(app)
 
 	app.Listen(cfg.HTTPServer.Address)
 }

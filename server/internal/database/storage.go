@@ -2,6 +2,7 @@ package storage
 
 import (
 	"checkers-server/internal/config"
+	"checkers-server/internal/database/redis"
 	playerRepo "checkers-server/internal/database/repositories/player"
 	sessionRepo "checkers-server/internal/database/repositories/session"
 	"database/sql"
@@ -13,6 +14,7 @@ import (
 type Storage struct {
 	Db    *sql.DB
 	Repos *Repositories
+	Redis *redis.RedisStorage
 }
 
 type Repositories struct {
@@ -46,10 +48,13 @@ func InitRepositories(db *sql.DB) *Repositories {
 	return &repos
 }
 
-func InitStorage(db *sql.DB, repos *Repositories) *Storage {
+func InitStorage(db *sql.DB, repos *Repositories, cfg *config.Config) *Storage {
+	redis := redis.Init(cfg)
+
 	storage := Storage{
 		Db:    db,
 		Repos: repos,
+		Redis: redis,
 	}
 
 	return &storage
