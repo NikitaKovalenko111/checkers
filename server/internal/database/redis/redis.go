@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"strconv"
 
+	"github.com/google/uuid"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -32,10 +33,16 @@ func (s *RedisStorage) Connect() {
 	s.rdb = rdb
 }
 
-func (s *RedisStorage) AddSocketConnection(socketId string, userId int) error {
+func (s *RedisStorage) AddPlayer(player *models.Player) error {
 	ctx := context.Background()
 
-	err := s.rdb.Set(ctx, strconv.Itoa(userId), socketId, 0).Err()
+	jsonPlayer, err := json.Marshal(*player)
+
+	if err != nil {
+		return err
+	}
+
+	err = s.rdb.Set(ctx, strconv.Itoa(player.Id), jsonPlayer, 0).Err()
 
 	if err != nil {
 		return err
@@ -44,22 +51,30 @@ func (s *RedisStorage) AddSocketConnection(socketId string, userId int) error {
 	return nil
 }
 
-func (s *RedisStorage) GetSocketConnection(userId int) (*string, error) {
+func (s *RedisStorage) GetPlayer(playerId int) (*models.Player, error) {
 	ctx := context.Background()
 
-	socketId, err := s.rdb.Get(ctx, strconv.Itoa(userId)).Result()
+	player, err := s.rdb.Get(ctx, strconv.Itoa(playerId)).Result()
 
 	if err != nil {
 		return nil, err
 	}
 
-	return &socketId, nil
+	var parsedPlayer models.Player
+
+	err = json.Unmarshal([]byte(player), &parsedPlayer)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &parsedPlayer, nil
 }
 
-func (s *RedisStorage) RemoveSocketConnection(userId int) error {
+func (s *RedisStorage) RemovePlayer(playerId int) error {
 	ctx := context.Background()
 
-	err := s.rdb.Del(ctx, strconv.Itoa(userId)).Err()
+	err := s.rdb.Del(ctx, strconv.Itoa(playerId)).Err()
 
 	if err != nil {
 		return err
@@ -71,7 +86,13 @@ func (s *RedisStorage) RemoveSocketConnection(userId int) error {
 func (s *RedisStorage) AddSession(session *models.Session) error {
 	ctx := context.Background()
 
-	err := s.rdb.Set(ctx, strconv.Itoa(session.Id), session, 0).Err()
+	jsonSession, err := json.Marshal(*session)
+
+	if err != nil {
+		return err
+	}
+
+	err = s.rdb.Set(ctx, session.Id.String(), jsonSession, 0).Err()
 
 	if err != nil {
 		return err
@@ -80,10 +101,10 @@ func (s *RedisStorage) AddSession(session *models.Session) error {
 	return nil
 }
 
-func (s *RedisStorage) GetSession(sessionId int) (*models.Session, error) {
+func (s *RedisStorage) GetSession(sessionId uuid.UUID) (*models.Session, error) {
 	ctx := context.Background()
 
-	session, err := s.rdb.Get(ctx, strconv.Itoa(sessionId)).Result()
+	session, err := s.rdb.Get(ctx, sessionId.String()).Result()
 
 	if err != nil {
 		return nil, err
@@ -97,4 +118,16 @@ func (s *RedisStorage) GetSession(sessionId int) (*models.Session, error) {
 	}
 
 	return &parsedSession, nil
+}
+
+func (s *RedisStorage) RemoveSession(sessionId uuid.UUID) error {
+	ctx := context.Background()
+
+	err := s.rdb.Del(ctx, sessionId.String()).Err()
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

@@ -1,16 +1,18 @@
 package socket
 
 import (
-	"checkers-server/internal/database/redis"
+	socketTransportDto "checkers-server/internal/transport/socket/dto"
 	"fmt"
+	"log/slog"
 	"strconv"
+	"sync"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/adaptor"
 	socketio "github.com/googollee/go-socket.io"
 )
 
-func SocketStart(app fiber.Router, redis *redis.RedisStorage) (*socketio.Server, error) {
+func SocketStart(app fiber.Router, socketMap *sync.Map, logger *slog.Logger) (*socketio.Server, error) {
 	io := socketio.NewServer(nil)
 
 	io.OnConnect("/", func(s socketio.Conn) error {
@@ -23,16 +25,30 @@ func SocketStart(app fiber.Router, redis *redis.RedisStorage) (*socketio.Server,
 			return err
 		}
 
-		fmt.Println("uid:", uid)
+		logger.Info("new connection", slog.String("uid", headers.Get("userId")), slog.String("id", s.ID()))
 
-		err = redis.AddSocketConnection(s.ID(), uid)
+		socketMap.Store(uid, s)
+
+		return nil
+	})
+
+	io.OnDisconnect("/", func(c socketio.Conn, s string) {
+		c.SetContext("")
+
+		headers := c.RemoteHeader()
+		uid, err := strconv.Atoi(headers.Get("userId"))
 
 		if err != nil {
-			return err
+			panic(err)
 		}
 
-		fmt.Println("connected:", s.ID())
-		return nil
+		logger.Info("disconnected", slog.String("uid", headers.Get("userId")), slog.String("id", c.ID()))
+
+		socketMap.Delete(uid)
+	})
+
+	io.OnEvent("/", "step", func(c socketio.Conn, pos socketTransportDto.StepEventDto) {
+		io.BroadcastToRoom("/", fmt.Sprintf("session/%s", pos.SessionId), "newStep", pos.Position)
 	})
 
 	go func() {

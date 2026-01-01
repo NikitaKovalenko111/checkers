@@ -5,6 +5,7 @@ import (
 	playerController "checkers-server/internal/transport/http/controllers/player"
 	sessionController "checkers-server/internal/transport/http/controllers/session"
 	"checkers-server/internal/utils/queue"
+	"log/slog"
 
 	"github.com/gofiber/fiber/v2"
 	socketio "github.com/googollee/go-socket.io"
@@ -21,8 +22,8 @@ type Controllers struct {
 	PlayerController  *playerController.PlayerController
 }
 
-func Init(services *services.Handlers, app fiber.Router, queue *queue.Queue, io *socketio.Server) *HTTP {
-	sessionController := sessionController.Init(services.PlayerService, services.SessionService, app, queue, io)
+func Init(services *services.Handlers, app fiber.Router, queue *queue.Queue, io *socketio.Server, logger *slog.Logger) *HTTP {
+	sessionController := sessionController.Init(services.PlayerService, services.SocketService, services.SessionService, app, queue, io, logger)
 	playerController := playerController.Init(services.PlayerService, app, queue)
 
 	controllers := Controllers{

@@ -8,21 +8,31 @@ import (
 )
 
 type PlayerService struct {
-	PlayerRepo *playerRepo.PlayerRepo
-	Queue      *queue.Queue
+	playerRepo *playerRepo.PlayerRepo
+	queue      *queue.Queue
 }
 
 func Init(playerRepo *playerRepo.PlayerRepo, queue *queue.Queue) *PlayerService {
 	service := PlayerService{
-		PlayerRepo: playerRepo,
-		Queue:      queue,
+		playerRepo: playerRepo,
+		queue:      queue,
 	}
 
 	return &service
 }
 
 func (service *PlayerService) CreatePlayer(status string) (*models.Player, error) {
-	player, err := service.PlayerRepo.CreatePlayer(status)
+	player, err := service.playerRepo.CreatePlayer(status)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return player, nil
+}
+
+func (service *PlayerService) FindPlayer(playerId int) (*models.Player, error) {
+	player, err := service.playerRepo.FindPlayerById(playerId)
 
 	if err != nil {
 		return nil, err
@@ -41,14 +51,14 @@ func (service *PlayerService) FindOpponent(playerId int) (*models.Player, error)
 
 		defer wg.Done()
 
-		if service.Queue.QueueArray[0] == -1 {
-			service.Queue.Add(playerId)
+		if service.queue.QueueArray[0] == -1 {
+			service.queue.Add(playerId)
 
 			opponent = nil
 		} else {
-			opponentId = service.Queue.Read()
+			opponentId = service.queue.Read()
 
-			opponent, _ = service.PlayerRepo.FindPlayerById(opponentId)
+			opponent, _ = service.playerRepo.FindPlayerById(opponentId)
 		}
 
 	}()

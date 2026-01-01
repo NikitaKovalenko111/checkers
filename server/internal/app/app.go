@@ -8,6 +8,7 @@ import (
 	"checkers-server/internal/transport/http"
 	"checkers-server/internal/transport/socket"
 	"checkers-server/internal/utils/queue"
+	"sync"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -44,11 +45,9 @@ func Run() {
 	queue := queue.Queue{}
 	queue.Init()
 
-	services := services.InitServices(storage.Repos, &queue)
+	var socketMap sync.Map
 
-	logger.Info("Successfully inited all services!")
-
-	io, err := socket.SocketStart(app, storage.Redis)
+	io, err := socket.SocketStart(app, &socketMap, logger)
 
 	if err != nil {
 		panic("Couldn't start socket!")
@@ -56,7 +55,13 @@ func Run() {
 
 	defer io.Close()
 
-	controllers := http.Init(services.Handlers, app, &queue, io)
+	logger.Info("Successfully started socket.io!")
+
+	services := services.InitServices(storage.Repos, &queue, storage.Redis, io, &socketMap)
+
+	logger.Info("Successfully inited all services!")
+
+	controllers := http.Init(services.Handlers, app, &queue, io, logger)
 
 	controllers.Start()
 

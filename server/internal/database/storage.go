@@ -74,18 +74,4 @@ func (storage *Storage) Prepare() {
 	if err != nil {
 		panic(fmt.Sprintf("%s Error: %s", "Couldn't prepare table player!", err.Error()))
 	}
-
-	_, err = storage.Db.Exec(
-		`
-		CREATE TABLE IF NOT EXISTS game_session (
-			session_id SERIAL PRIMARY KEY,
-			first_player_id INT REFERENCES player(player_id),
-			second_player_id INT REFERENCES player(player_id)
-		)
-		`,
-	)
-
-	if err != nil {
-		panic(fmt.Sprintf("%s Error: %s", "Couldn't prepare table game_session!", err.Error()))
-	}
 }
