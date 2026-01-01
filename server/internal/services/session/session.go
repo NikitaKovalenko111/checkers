@@ -30,8 +30,11 @@ func Init(sessionRepo *sessionRepo.SessionRepo, queue *queue.Queue, redis *redis
 
 func (service *SessionService) CreateSession(playerId int, opponentId int) (*models.Session, error) {
 	var session = models.Session{
-		Id:             uuid.New(),
-		FirstPlayerId:  playerId,
+		Id: uuid.New(),
+		FirstPlayerId: models.SessionPlayer{
+			PlayerId:   playerId,
+			StepStatus: true,
+		},
 		SecondPlayerId: opponentId,
 	}
 

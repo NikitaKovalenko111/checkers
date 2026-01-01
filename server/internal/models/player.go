@@ -1,6 +1,10 @@
 package models
 
-import "github.com/google/uuid"
+import (
+	"checkers-server/internal/types"
+
+	"github.com/google/uuid"
+)
 
 type Player struct {
 	Id     int    `json:"id"`
@@ -8,7 +12,19 @@ type Player struct {
 }
 
 type Session struct {
-	Id             uuid.UUID `json:"id"`
-	FirstPlayerId  int       `json:"firstPlayerId"`
-	SecondPlayerId int       `json:"secondPlayerId"`
+	Id             uuid.UUID     `json:"id"`
+	FirstPlayerId  SessionPlayer `json:"firstPlayer"`
+	SecondPlayerId SessionPlayer `json:"secondPlayer"`
+}
+
+type SessionPlayer struct {
+	PlayerId   int      `json:"playerId"`
+	StepStatus bool     `json:"stepStatus"`
+	Figures    []Figure `json:"playerFigures"`
+}
+
+type Figure struct {
+	FigureId       int            `json:"figureId"`
+	FigureType     string         `json:"figureType"`
+	FigurePosition types.Position `json:"figurePosition"`
 }

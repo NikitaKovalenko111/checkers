@@ -11,6 +11,16 @@ const (
 	Playing   = "playing"
 )
 
+const (
+	DefaultType = "default"
+	QueenType   = "queen"
+)
+
+const (
+	FigureTop    = "top"
+	FigureBottom = "bottom"
+)
+
 type Position struct {
 	XPos int `json:"x"`
 	YPos int `json:"y"`
