@@ -4,5 +4,7 @@ import "checkers-server/internal/types"
 
 type StepEventDto struct {
 	SessionId string         `json:"sessionId"`
-	Position  types.Position `json:"newPos"`
+	PlayerId  int            `json:"playerId"`
+	FigureId  int            `json:"figureId"`
+	Position  types.Position `json:"figurePos"`
 }

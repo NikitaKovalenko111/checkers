@@ -47,7 +47,7 @@ func Run() {
 
 	var socketMap sync.Map
 
-	io, err := socket.SocketStart(app, &socketMap, logger)
+	io, err := socket.SocketStart(app, &socketMap, logger, storage.Redis)
 
 	if err != nil {
 		panic("Couldn't start socket!")

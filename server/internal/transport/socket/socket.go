@@ -1,6 +1,7 @@
 package socket
 
 import (
+	"checkers-server/internal/database/redis"
 	socketTransportDto "checkers-server/internal/transport/socket/dto"
 	"fmt"
 	"log/slog"
@@ -9,10 +10,11 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/adaptor"
+	"github.com/google/uuid"
 	socketio "github.com/googollee/go-socket.io"
 )
 
-func SocketStart(app fiber.Router, socketMap *sync.Map, logger *slog.Logger) (*socketio.Server, error) {
+func SocketStart(app fiber.Router, socketMap *sync.Map, logger *slog.Logger, redis *redis.RedisStorage) (*socketio.Server, error) {
 	io := socketio.NewServer(nil)
 
 	io.OnConnect("/", func(s socketio.Conn) error {
@@ -47,8 +49,28 @@ func SocketStart(app fiber.Router, socketMap *sync.Map, logger *slog.Logger) (*s
 		socketMap.Delete(uid)
 	})
 
-	io.OnEvent("/", "step", func(c socketio.Conn, pos socketTransportDto.StepEventDto) {
-		io.BroadcastToRoom("/", fmt.Sprintf("session/%s", pos.SessionId), "newStep", pos.Position)
+	io.OnEvent("/", "step", func(c socketio.Conn, step socketTransportDto.StepEventDto) {
+		sessionUUID, err := uuid.Parse(step.SessionId)
+
+		if err != nil {
+			logger.Error("couldn't parse id to uuid")
+		}
+
+		session, err := redis.GetSession(sessionUUID)
+
+		if err != nil {
+			logger.Error(err.Error())
+		}
+
+		if step.PlayerId == session.FirstPlayer.PlayerId {
+			session.FirstPlayer.Figures[step.FigureId].FigurePosition = step.Position
+		} else {
+			session.SecondPlayer.Figures[step.FigureId].FigurePosition = step.Position
+		}
+
+		redis.SetSession(session)
+
+		io.BroadcastToRoom("/", fmt.Sprintf("session/%s", step.SessionId), "newStep", *session)
 	})
 
 	go func() {

@@ -83,7 +83,7 @@ func (s *RedisStorage) RemovePlayer(playerId int) error {
 	return nil
 }
 
-func (s *RedisStorage) AddSession(session *models.Session) error {
+func (s *RedisStorage) SetSession(session *models.Session) error {
 	ctx := context.Background()
 
 	jsonSession, err := json.Marshal(*session)

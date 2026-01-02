@@ -12,9 +12,9 @@ type Player struct {
 }
 
 type Session struct {
-	Id             uuid.UUID     `json:"id"`
-	FirstPlayerId  SessionPlayer `json:"firstPlayer"`
-	SecondPlayerId SessionPlayer `json:"secondPlayer"`
+	Id           uuid.UUID     `json:"id"`
+	FirstPlayer  SessionPlayer `json:"firstPlayer"`
+	SecondPlayer SessionPlayer `json:"secondPlayer"`
 }
 
 type SessionPlayer struct {

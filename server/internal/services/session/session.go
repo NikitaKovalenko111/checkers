@@ -5,6 +5,8 @@ import (
 	sessionRepo "checkers-server/internal/database/repositories/session"
 	"checkers-server/internal/models"
 	playerService "checkers-server/internal/services/player"
+	"checkers-server/internal/types"
+	"checkers-server/internal/utils/figures"
 	"checkers-server/internal/utils/queue"
 
 	"github.com/google/uuid"
@@ -31,14 +33,19 @@ func Init(sessionRepo *sessionRepo.SessionRepo, queue *queue.Queue, redis *redis
 func (service *SessionService) CreateSession(playerId int, opponentId int) (*models.Session, error) {
 	var session = models.Session{
 		Id: uuid.New(),
-		FirstPlayerId: models.SessionPlayer{
+		FirstPlayer: models.SessionPlayer{
 			PlayerId:   playerId,
 			StepStatus: true,
+			Figures:    *figures.MakeDefaultFigures(types.FigureBottom),
 		},
-		SecondPlayerId: opponentId,
+		SecondPlayer: models.SessionPlayer{
+			PlayerId:   opponentId,
+			StepStatus: false,
+			Figures:    *figures.MakeDefaultFigures(types.FigureTop),
+		},
 	}
 
-	err := service.Redis.AddSession(&session)
+	err := service.Redis.SetSession(&session)
 
 	// session, err := service.SessionRepo.CreateSession(playerId, opponentId)
 
