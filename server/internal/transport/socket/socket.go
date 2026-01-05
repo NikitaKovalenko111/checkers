@@ -2,7 +2,9 @@ package socket
 
 import (
 	"checkers-server/internal/database/redis"
+	gameLogic "checkers-server/internal/logic"
 	socketTransportDto "checkers-server/internal/transport/socket/dto"
+	"checkers-server/internal/utils"
 	"fmt"
 	"log/slog"
 	"strconv"
@@ -62,10 +64,18 @@ func SocketStart(app fiber.Router, socketMap *sync.Map, logger *slog.Logger, red
 			logger.Error(err.Error())
 		}
 
-		if step.PlayerId == session.FirstPlayer.PlayerId {
-			session.FirstPlayer.Figures[step.FigureId].FigurePosition = step.Position
-		} else {
-			session.SecondPlayer.Figures[step.FigureId].FigurePosition = step.Position
+		currentPlayer := utils.PickCurrentPlayer(step.PlayerId, session)
+
+		err = gameLogic.MakeStep(&step, currentPlayer, session)
+
+		if err != nil {
+			if err != nil {
+				logger.Error(err.Error())
+			}
+
+			c.Emit("error", fiber.NewError(fiber.ErrForbidden.Code, err.Error()))
+
+			return
 		}
 
 		redis.SetSession(session)

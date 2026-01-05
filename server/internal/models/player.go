@@ -20,6 +20,7 @@ type Session struct {
 type SessionPlayer struct {
 	PlayerId   int      `json:"playerId"`
 	StepStatus bool     `json:"stepStatus"`
+	Type       string   `json:"playerType"`
 	Figures    []Figure `json:"playerFigures"`
 }
 

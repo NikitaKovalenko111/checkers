@@ -5,6 +5,7 @@ import (
 	socketTransportDto "checkers-server/internal/transport/socket/dto"
 	"checkers-server/internal/types"
 	"checkers-server/internal/utils"
+	"errors"
 )
 
 func checkIfCellIsBlocked(pos *types.Position, session *models.Session) bool {
@@ -22,7 +23,13 @@ func checkIfCellIsBlocked(pos *types.Position, session *models.Session) bool {
 	return false
 }
 
-func CheckStepLegitimacy(figureType string, session *models.Session, step *socketTransportDto.StepEventDto) bool {
+func checkStepLegitimacy(figureType string, session *models.Session, step *socketTransportDto.StepEventDto) bool {
+	neededPlayer := utils.PickCurrentPlayer(step.PlayerId, session)
+
+	if !neededPlayer.StepStatus {
+		return false
+	}
+
 	isBlocked := checkIfCellIsBlocked(&step.Position, session)
 
 	if isBlocked {
@@ -32,8 +39,6 @@ func CheckStepLegitimacy(figureType string, session *models.Session, step *socke
 	if !((step.Position.XPos >= 0 && step.Position.XPos <= 7) && (step.Position.YPos >= 0 && step.Position.YPos <= 7)) {
 		return false
 	}
-
-	neededPlayer := utils.PickCurrentPlayer(step.PlayerId, session)
 
 	stepXPosDelta := step.Position.XPos - neededPlayer.Figures[step.FigureId].FigurePosition.XPos
 	stepYPosDelta := step.Position.YPos - neededPlayer.Figures[step.FigureId].FigurePosition.YPos
@@ -53,10 +58,58 @@ func CheckStepLegitimacy(figureType string, session *models.Session, step *socke
 
 		return true
 	} else {
-		if stepXPosDelta > stepYPosDelta {
+		if !((stepXPosDelta == 0 && stepYPosDelta != 0) || (stepYPosDelta == 0 && stepXPosDelta != 0)) {
+			return false
+		} else if stepXPosDelta > stepYPosDelta {
+			if step.Position.YPos != (step.Position.XPos - (step.Position.XPos - 1)) {
+				return false
+			}
 
+			if neededPlayer.Figures[step.FigureId].FigurePosition.YPos != (step.Position.XPos - (step.Position.XPos - 1)) {
+				return false
+			}
+		} else {
+			if step.Position.YPos != (step.Position.XPos + (step.Position.YPos - step.Position.XPos)) {
+				return false
+			}
+
+			if neededPlayer.Figures[step.FigureId].FigurePosition.YPos != (neededPlayer.Figures[step.FigureId].FigurePosition.XPos + (neededPlayer.Figures[step.FigureId].FigurePosition.YPos - step.Position.XPos)) {
+				return false
+			}
 		}
 
 		return true
 	}
+}
+
+func MakeStep(step *socketTransportDto.StepEventDto, player *models.SessionPlayer, session *models.Session) error {
+	isStepLegitimate := checkStepLegitimacy(player.Figures[step.FigureId].FigureType, session, step)
+
+	if !isStepLegitimate {
+		return errors.New("the step is not legitimate")
+	}
+
+	player.Figures[step.FigureId].FigurePosition = step.Position
+
+	if player.Type == "white" && step.Position.YPos == 7 {
+		err := makeCheckerQueen(&player.Figures[step.FigureId])
+
+		if err != nil {
+			return errors.New("couldn't make the checker a queen")
+		}
+	} else if player.Type == "black" && step.Position.YPos == 0 {
+		err := makeCheckerQueen(&player.Figures[step.FigureId])
+
+		if err != nil {
+			return errors.New("couldn't make the checker a queen")
+		}
+	}
+
+	return nil
+}
+
+func makeCheckerQueen(figure *models.Figure) error {
+	figure.FigureType = types.QueenType
+
+	return nil
 }
