@@ -28,4 +28,5 @@ type Figure struct {
 	FigureId       int            `json:"figureId"`
 	FigureType     string         `json:"figureType"`
 	FigurePosition types.Position `json:"figurePosition"`
+	FigureStatus   string         `json:"figureStatus"`
 }

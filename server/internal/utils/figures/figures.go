@@ -10,8 +10,9 @@ func MakeDefaultFigures(figuresSide string) *[]models.Figure {
 
 	for i := 0; i < 12; i++ {
 		figures = append(figures, models.Figure{
-			FigureId:   i,
-			FigureType: types.DefaultType,
+			FigureId:     i,
+			FigureType:   types.DefaultType,
+			FigureStatus: types.FigureAlive,
 			FigurePosition: func() types.Position {
 				if figuresSide == types.FigureBottom {
 					switch i % 3 {

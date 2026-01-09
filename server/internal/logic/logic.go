@@ -6,6 +6,8 @@ import (
 	"checkers-server/internal/types"
 	"checkers-server/internal/utils"
 	"errors"
+	"math"
+	"sync"
 )
 
 func checkIfCellIsBlocked(pos *types.Position, session *models.Session) bool {
@@ -21,6 +23,73 @@ func checkIfCellIsBlocked(pos *types.Position, session *models.Session) bool {
 	}
 
 	return false
+}
+
+func countFiguresBefore(step *socketTransportDto.StepEventDto, prevPos *types.Position, currentPlayer *models.SessionPlayer, session *models.Session) *types.CountOfFigures {
+	var otherPlayer *models.SessionPlayer
+	var countOfFigures types.CountOfFigures
+
+	if currentPlayer.PlayerId == session.FirstPlayer.PlayerId {
+		otherPlayer = &session.SecondPlayer
+	} else {
+		otherPlayer = &session.FirstPlayer
+	}
+
+	var wg sync.WaitGroup
+
+	wg.Add(2)
+
+	go func() {
+		for i := 0; i < len(currentPlayer.Figures); i++ {
+			if currentPlayer.Figures[i].FigureStatus == types.FigureDead {
+				continue
+			}
+
+			isInOneLine := utils.CheckIfInOneLine(step.Position, currentPlayer.Figures[i].FigurePosition)
+
+			if !isInOneLine {
+				continue
+			}
+
+			if currentPlayer.Figures[i].FigurePosition.XPos > min(step.Position.XPos, prevPos.XPos) && currentPlayer.Figures[i].FigurePosition.XPos < max(step.Position.XPos, prevPos.XPos) {
+				if currentPlayer.Type == types.WhiteFigure {
+					countOfFigures.WhiteCount = append(countOfFigures.WhiteCount, currentPlayer.Figures[i].FigurePosition)
+				} else {
+					countOfFigures.BlackCount = append(countOfFigures.BlackCount, currentPlayer.Figures[i].FigurePosition)
+				}
+			}
+		}
+
+		wg.Done()
+	}()
+
+	go func() {
+		for i := 0; i < len(otherPlayer.Figures); i++ {
+			if currentPlayer.Figures[i].FigureStatus == types.FigureDead {
+				continue
+			}
+
+			isInOneLine := utils.CheckIfInOneLine(step.Position, otherPlayer.Figures[i].FigurePosition)
+
+			if !isInOneLine {
+				continue
+			}
+
+			if otherPlayer.Figures[i].FigurePosition.XPos > min(step.Position.XPos, prevPos.XPos) && otherPlayer.Figures[i].FigurePosition.XPos < max(step.Position.XPos, prevPos.XPos) {
+				if currentPlayer.Type == types.WhiteFigure {
+					countOfFigures.WhiteCount = append(countOfFigures.WhiteCount, currentPlayer.Figures[i].FigurePosition)
+				} else {
+					countOfFigures.BlackCount = append(countOfFigures.BlackCount, currentPlayer.Figures[i].FigurePosition)
+				}
+			}
+		}
+
+		wg.Done()
+	}()
+
+	wg.Wait()
+
+	return &countOfFigures
 }
 
 func checkStepLegitimacy(figureType string, session *models.Session, step *socketTransportDto.StepEventDto) bool {
@@ -60,25 +129,21 @@ func checkStepLegitimacy(figureType string, session *models.Session, step *socke
 	} else {
 		if !((stepXPosDelta == 0 && stepYPosDelta != 0) || (stepYPosDelta == 0 && stepXPosDelta != 0)) {
 			return false
-		} else if stepXPosDelta > stepYPosDelta {
-			if step.Position.YPos != (step.Position.XPos - (step.Position.XPos - 1)) {
-				return false
-			}
+		}
 
-			if neededPlayer.Figures[step.FigureId].FigurePosition.YPos != (step.Position.XPos - (step.Position.XPos - 1)) {
-				return false
-			}
-		} else {
-			if step.Position.YPos != (step.Position.XPos + (step.Position.YPos - step.Position.XPos)) {
-				return false
-			}
+		isInOneLine := utils.CheckIfInOneLine(step.Position, neededPlayer.Figures[step.FigureId].FigurePosition)
 
-			if neededPlayer.Figures[step.FigureId].FigurePosition.YPos != (neededPlayer.Figures[step.FigureId].FigurePosition.XPos + (neededPlayer.Figures[step.FigureId].FigurePosition.YPos - step.Position.XPos)) {
-				return false
-			}
+		if !isInOneLine {
+			return false
 		}
 
 		return true
+	}
+}
+
+func eatFigures(figuresToEat *[]models.Figure) {
+	for i := range *figuresToEat {
+		(*figuresToEat)[i].FigureStatus = types.FigureDead
 	}
 }
 
@@ -87,6 +152,48 @@ func MakeStep(step *socketTransportDto.StepEventDto, player *models.SessionPlaye
 
 	if !isStepLegitimate {
 		return errors.New("the step is not legitimate")
+	}
+
+	figuresBefore := countFiguresBefore(step, &player.Figures[step.FigureId].FigurePosition, player, session)
+
+	if player.Type == types.WhiteFigure {
+		if len(figuresBefore.WhiteCount) > 0 {
+			return errors.New("the step is not legitimate")
+		}
+
+		if len(figuresBefore.BlackCount) > 0 {
+			var canBeEaten bool = true
+
+			for i := 1; i < len(figuresBefore.BlackCount); i++ {
+				if deltaX := figuresBefore.BlackCount[i].XPos - figuresBefore.BlackCount[i-1].XPos; math.Abs(float64(deltaX)) != 2 {
+					canBeEaten = false
+				}
+			}
+
+			if !canBeEaten {
+				return errors.New("the step is not legitimate")
+			}
+
+		}
+	} else {
+		if len(figuresBefore.BlackCount) > 0 {
+			return errors.New("the step is not legitimate")
+		}
+
+		if len(figuresBefore.WhiteCount) > 0 {
+			var canBeEaten bool = true
+
+			for i := 1; i < len(figuresBefore.WhiteCount); i++ {
+				if deltaX := figuresBefore.WhiteCount[i].XPos - figuresBefore.WhiteCount[i-1].XPos; math.Abs(float64(deltaX)) != 2 {
+					canBeEaten = false
+				}
+			}
+
+			if !canBeEaten {
+				return errors.New("the step is not legitimate")
+			}
+
+		}
 	}
 
 	player.Figures[step.FigureId].FigurePosition = step.Position

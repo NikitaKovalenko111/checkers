@@ -21,6 +21,21 @@ const (
 	FigureBottom = "bottom"
 )
 
+const (
+	WhiteFigure = "white"
+	BlackFigure = "black"
+)
+
+const (
+	FigureAlive = "alive"
+	FigureDead  = "dead"
+)
+
+type CountOfFigures struct {
+	BlackCount []Position
+	WhiteCount []Position
+}
+
 type Position struct {
 	XPos int `json:"x"`
 	YPos int `json:"y"`
