@@ -3,6 +3,7 @@ package socket
 import (
 	"checkers-server/internal/database/redis"
 	gameLogic "checkers-server/internal/logic"
+	"checkers-server/internal/models"
 	socketTransportDto "checkers-server/internal/transport/socket/dto"
 	"checkers-server/internal/utils"
 	"fmt"
@@ -78,9 +79,18 @@ func SocketStart(app fiber.Router, socketMap *sync.Map, logger *slog.Logger, red
 			return
 		}
 
+		wonPlayer, isEnded := gameLogic.CheckIfGameEnded(session)
+
 		redis.SetSession(session)
 
-		io.BroadcastToRoom("/", fmt.Sprintf("session/%s", step.SessionId), "newStep", *session)
+		if isEnded {
+			io.BroadcastToRoom("/", fmt.Sprintf("session/%s", step.SessionId), "gameFinished", models.GameFinished{
+				Session:   *session,
+				WonPlayer: wonPlayer,
+			})
+		} else {
+			io.BroadcastToRoom("/", fmt.Sprintf("session/%s", step.SessionId), "newStep", *session)
+		}
 	})
 
 	go func() {

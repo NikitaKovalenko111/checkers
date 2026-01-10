@@ -31,11 +31,6 @@ const (
 	FigureDead  = "dead"
 )
 
-type CountOfFigures struct {
-	BlackCount []Position
-	WhiteCount []Position
-}
-
 type Position struct {
 	XPos int `json:"x"`
 	YPos int `json:"y"`

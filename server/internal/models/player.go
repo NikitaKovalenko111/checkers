@@ -30,3 +30,13 @@ type Figure struct {
 	FigurePosition types.Position `json:"figurePosition"`
 	FigureStatus   string         `json:"figureStatus"`
 }
+
+type GameFinished struct {
+	Session   Session `json:"session"`
+	WonPlayer string  `json:"wonPlayer"`
+}
+
+type CountOfFigures struct {
+	BlackCount []Figure
+	WhiteCount []Figure
+}

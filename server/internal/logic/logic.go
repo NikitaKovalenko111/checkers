@@ -25,9 +25,9 @@ func checkIfCellIsBlocked(pos *types.Position, session *models.Session) bool {
 	return false
 }
 
-func countFiguresBefore(step *socketTransportDto.StepEventDto, prevPos *types.Position, currentPlayer *models.SessionPlayer, session *models.Session) *types.CountOfFigures {
+func countFiguresBefore(step *socketTransportDto.StepEventDto, prevPos *types.Position, currentPlayer *models.SessionPlayer, session *models.Session) *models.CountOfFigures {
 	var otherPlayer *models.SessionPlayer
-	var countOfFigures types.CountOfFigures
+	var countOfFigures models.CountOfFigures
 
 	if currentPlayer.PlayerId == session.FirstPlayer.PlayerId {
 		otherPlayer = &session.SecondPlayer
@@ -53,9 +53,9 @@ func countFiguresBefore(step *socketTransportDto.StepEventDto, prevPos *types.Po
 
 			if currentPlayer.Figures[i].FigurePosition.XPos > min(step.Position.XPos, prevPos.XPos) && currentPlayer.Figures[i].FigurePosition.XPos < max(step.Position.XPos, prevPos.XPos) {
 				if currentPlayer.Type == types.WhiteFigure {
-					countOfFigures.WhiteCount = append(countOfFigures.WhiteCount, currentPlayer.Figures[i].FigurePosition)
+					countOfFigures.WhiteCount = append(countOfFigures.WhiteCount, currentPlayer.Figures[i])
 				} else {
-					countOfFigures.BlackCount = append(countOfFigures.BlackCount, currentPlayer.Figures[i].FigurePosition)
+					countOfFigures.BlackCount = append(countOfFigures.BlackCount, currentPlayer.Figures[i])
 				}
 			}
 		}
@@ -77,9 +77,9 @@ func countFiguresBefore(step *socketTransportDto.StepEventDto, prevPos *types.Po
 
 			if otherPlayer.Figures[i].FigurePosition.XPos > min(step.Position.XPos, prevPos.XPos) && otherPlayer.Figures[i].FigurePosition.XPos < max(step.Position.XPos, prevPos.XPos) {
 				if currentPlayer.Type == types.WhiteFigure {
-					countOfFigures.WhiteCount = append(countOfFigures.WhiteCount, currentPlayer.Figures[i].FigurePosition)
+					countOfFigures.WhiteCount = append(countOfFigures.WhiteCount, currentPlayer.Figures[i])
 				} else {
-					countOfFigures.BlackCount = append(countOfFigures.BlackCount, currentPlayer.Figures[i].FigurePosition)
+					countOfFigures.BlackCount = append(countOfFigures.BlackCount, currentPlayer.Figures[i])
 				}
 			}
 		}
@@ -147,6 +147,12 @@ func eatFigures(figuresToEat *[]models.Figure) {
 	}
 }
 
+func makeCheckerQueen(figure *models.Figure) error {
+	figure.FigureType = types.QueenType
+
+	return nil
+}
+
 func MakeStep(step *socketTransportDto.StepEventDto, player *models.SessionPlayer, session *models.Session) error {
 	isStepLegitimate := checkStepLegitimacy(player.Figures[step.FigureId].FigureType, session, step)
 
@@ -155,6 +161,8 @@ func MakeStep(step *socketTransportDto.StepEventDto, player *models.SessionPlaye
 	}
 
 	figuresBefore := countFiguresBefore(step, &player.Figures[step.FigureId].FigurePosition, player, session)
+
+	var figuresToEat []models.Figure
 
 	if player.Type == types.WhiteFigure {
 		if len(figuresBefore.WhiteCount) > 0 {
@@ -165,9 +173,12 @@ func MakeStep(step *socketTransportDto.StepEventDto, player *models.SessionPlaye
 			var canBeEaten bool = true
 
 			for i := 1; i < len(figuresBefore.BlackCount); i++ {
-				if deltaX := figuresBefore.BlackCount[i].XPos - figuresBefore.BlackCount[i-1].XPos; math.Abs(float64(deltaX)) != 2 {
+				if deltaX := figuresBefore.BlackCount[i].FigurePosition.XPos - figuresBefore.BlackCount[i-1].FigurePosition.XPos; math.Abs(float64(deltaX)) != 2 {
 					canBeEaten = false
+					break
 				}
+
+				figuresToEat = append(figuresToEat, figuresBefore.BlackCount[i])
 			}
 
 			if !canBeEaten {
@@ -184,17 +195,21 @@ func MakeStep(step *socketTransportDto.StepEventDto, player *models.SessionPlaye
 			var canBeEaten bool = true
 
 			for i := 1; i < len(figuresBefore.WhiteCount); i++ {
-				if deltaX := figuresBefore.WhiteCount[i].XPos - figuresBefore.WhiteCount[i-1].XPos; math.Abs(float64(deltaX)) != 2 {
+				if deltaX := figuresBefore.WhiteCount[i].FigurePosition.XPos - figuresBefore.WhiteCount[i-1].FigurePosition.XPos; math.Abs(float64(deltaX)) != 2 {
 					canBeEaten = false
+					break
 				}
+
+				figuresToEat = append(figuresToEat, figuresBefore.BlackCount[i])
 			}
 
 			if !canBeEaten {
 				return errors.New("the step is not legitimate")
 			}
-
 		}
 	}
+
+	eatFigures(&figuresToEat)
 
 	player.Figures[step.FigureId].FigurePosition = step.Position
 
@@ -215,8 +230,32 @@ func MakeStep(step *socketTransportDto.StepEventDto, player *models.SessionPlaye
 	return nil
 }
 
-func makeCheckerQueen(figure *models.Figure) error {
-	figure.FigureType = types.QueenType
+func CheckIfGameEnded(session *models.Session) (string, bool) {
+	var isEmpty bool = true
 
-	return nil
+	for i := range session.FirstPlayer.Figures {
+		if session.FirstPlayer.Figures[i].FigureStatus == types.FigureAlive {
+			isEmpty = false
+			break
+		}
+	}
+
+	if isEmpty {
+		return session.FirstPlayer.Type, true
+	}
+
+	isEmpty = true
+
+	for i := range session.SecondPlayer.Figures {
+		if session.SecondPlayer.Figures[i].FigureStatus == types.FigureAlive {
+			isEmpty = false
+			break
+		}
+	}
+
+	if isEmpty {
+		return session.SecondPlayer.Type, true
+	}
+
+	return "", false
 }
