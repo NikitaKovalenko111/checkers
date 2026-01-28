@@ -1,0 +1,26 @@
+:root {
+    --color-black: #181A18;
+    --color-white: #FBFAF5;
+    --color-gray: #898989;
+    --color-light-gray: #D3D3D3;
+    --color-red: #FF6961;
+    --color-bright-red: #ff000d;
+    --color-brown: #7D4820;
+    --font-weight-base: 500;
+    --font-family-base: 'Manrope', sans-serif;
+
+    --border-radius-large: 24px;
+    --border-radius-medium: 16px;
+    --border-radius-small: 8px;
+
+    --border-thick: 3px solid var(--color-black);
+    --border-normal: 2px solid var(--color-black);
+    --border-thin: 1px solid var(--color-black);
+
+    --button-height: 64px;
+
+    --container-width: 1280px;
+    --container-padding: 13px;
+
+    --transition-duration: .2s;
+}

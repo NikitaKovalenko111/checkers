@@ -1,0 +1,51 @@
+@import './media';
+
+.container {
+    max-width: calc(var(--container-width) + (var(--container-padding) * 2));
+    width: 100%;
+    padding: 0 16px;
+    display: block;
+    margin: 0 auto;
+}
+
+.flex-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.color-blue {
+    color: var(--color-blue);
+}
+
+.bold-span {
+    font-weight: 700;
+}
+
+.color-gray {
+    color: #BEC7D5;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    border: 0;
+    padding: 0;
+    white-space: nowrap;
+    clip-path: inset(100%);
+    clip: rect(0 0 0 0);
+    overflow: hidden;
+}
+
+.hidden-mobile {
+    @include mobile {
+        display: none !important;
+    }
+}
+
+.visible-mobile {
+    @include mobile-first {
+        display: none !important;
+    }
+}

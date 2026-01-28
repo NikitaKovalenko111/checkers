@@ -1,0 +1,107 @@
+.table {
+    display: flex;
+    flex-direction: column;
+    border: var(--border-normal);
+    border-radius: var(--border-radius-medium);
+    justify-content: center;
+    width: fit-content;
+
+    &__row {
+        display: flex;
+    }
+
+    &__cell-definition {
+        display: none;
+        position: absolute;
+        font-size: 24px;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: var(--color-black);
+        user-select: none;
+    }
+
+    &__cell {
+        width: 100px;
+        height: 100px;
+        border: var(--border-thin);
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+            cursor: pointer;
+
+            .table__cell-definition {
+                display: block;
+            }
+        }
+
+        &--angle-top-left {
+            border-top-left-radius: var(--border-radius-medium);
+        }
+
+        &--angle-top-right {
+            border-top-right-radius: var(--border-radius-medium);
+        }
+
+        &--angle-bottom-left {
+            border-bottom-left-radius: var(--border-radius-medium);
+        }
+
+        &--angle-bottom-right {
+            border-bottom-right-radius: var(--border-radius-medium);
+        }
+
+        &--color-black {
+            background-color: var(--color-brown);
+
+            .table__cell-definition {
+                color: white;
+            }
+        }
+
+        &--is-white-figure {
+            &::after {
+                background-color: #fff !important;
+            }
+
+            .table__cell-definition {
+                color: black !important;
+            }
+        }
+
+        &--figure-default {
+            &::after {
+                content: "";
+                display: block;
+                width: 80%;
+                height: 80%;
+                border-radius: 50%;
+                background-color: black;
+            }
+        }
+
+        &--figure-queen {
+            &::after {
+                content: "";
+                display: block;
+                width: 80%;
+                height: 80%;
+                border-radius: 50%;
+                background-color: pink;
+            }
+        }
+
+        &--show-way {
+            &::after {
+                content: "";
+                display: block;
+                width: 10%;
+                height: 10%;
+                border-radius: 50%;
+                background-color: var(--color-bright-red);
+            }
+        }
+    }
+}

@@ -1,0 +1,50 @@
+@import './mixins';
+
+body {
+    font-weight: var(--font-weight-base);
+    font-family: var(--font-family-base);
+
+    @include fluid-text(16, 14);
+
+    color: var(--color-white);
+    background-color: var(--color-white);
+}
+
+a {
+    @include reset-link
+}
+
+button {
+    @include reset-button
+}
+
+a,
+button,
+input,
+textarea,
+svg * {
+    transition-duration: var(--transition-duration);
+}
+
+h1 {
+    @include fluid-text(48, 40);
+    font-weight: 700;
+}
+
+h2 {
+    @include fluid-text(32, 24);
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    line-height: 120%;
+}
+
+h3 {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+h4 {
+    @include fluid-text(16, 14);
+    font-weight: 700;
+}

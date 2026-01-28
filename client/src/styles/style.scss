@@ -1,0 +1,12 @@
+@import './fonts',
+'./globals',
+'./media',
+'./mixins',
+'./normalize',
+'./utils',
+'./variables';
+
+@import './../pages/game/game';
+
+@import './../components/table/table',
+'./../components/info-panel/info-panel';
